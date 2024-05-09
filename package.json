@@ -1,0 +1,16 @@
+{
+  "name": "conversationanalysis",
+  "version": "1.0.0",
+  "description": "Generate and analyze call transcripts",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deepika Teegapuram",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "openai": "^4.43.0"
+  }
+}
