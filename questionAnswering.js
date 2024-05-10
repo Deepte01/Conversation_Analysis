@@ -1,18 +1,6 @@
 import fs from 'fs';
-import readline from 'readline';
-import OpenAI from 'openai';
-import { config } from 'dotenv';
+import { openai, interactiveIO } from './app.js';
 
-config();
-const apiKey = process.env.OPENAI_API_KEY;
-const openai = new OpenAI({apiKey: apiKey});
-
-
-// interactiveIO will be used to inteact with OpenAI model to get responses to the question
-const interactiveIO = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
 
 // Function to read transcript from file
 function readTranscriptFromFile(filePath) {
@@ -47,13 +35,17 @@ async function getUserResponse(question, salesCallTranscript) {
     console.log(completion.choices[0].message.content);
 }
 
+/*
+    The below method is written with the help of ChatGPT and modified according to my requirements
+*/
+
 function AskUserInput(transcript)
 {
     // Ask for user input
     interactiveIO.question('Enter your question: ', async (userInput) => {
     // Send userInput and transcript to API
     try {
-        const apiResponse = await getUserResponse(userInput, transcript);
+        await getUserResponse(userInput, transcript);
     } catch (error) {
         console.error('Error sending data to API:', error.message);
     }
@@ -69,10 +61,7 @@ function AskUserInput(transcript)
        });
     });    
 }
-// Function to handle user input
-/*
-    The below method is written with the help of ChatGPT and modified according to my requirements
-*/
+
 async function handleUserInput() {
     // Ask for transcript file name
     interactiveIO.question('Enter the transcript file name in the output folder: ', async (transcriptFileName) => {

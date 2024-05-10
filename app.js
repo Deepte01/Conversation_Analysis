@@ -1,19 +1,16 @@
+//configure reusable imports here
 import OpenAI from 'openai';
 import { config } from 'dotenv';
+import readline from 'readline';
 
 config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
 const openai = new OpenAI({apiKey: apiKey});
-// tried to recrete the api call provieded in the openAI documentation
-async function main() {
-  const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: "You are a helpful assistant." }],
-    model: "gpt-3.5-turbo",
-  });
+const interactiveIO = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-  console.log(completion.choices[0]);
-}
-
-main() ;
+export { openai, interactiveIO };

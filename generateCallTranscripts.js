@@ -1,27 +1,12 @@
 import fs from 'fs';
-import OpenAI from 'openai';
-import { config } from 'dotenv';
-
-config();
-
-const content = "This is the output content";
+import { openai, interactiveIO } from './app.js';
 
 const outputPath = './Output';
-const filename = 'transcript.txt'; 
-const filePath = `${outputPath}/${filename}`;
 
-/*
-place the api call to OPenApi model here and store the script in the filepath
-*/
+const topics=["Cars", "Computers", "Chairs"];
 
-
-const apiKey = process.env.OPENAI_API_KEY;
-
-const openai = new OpenAI({apiKey: apiKey});
-const topics=[cars, house, bikes, computers];
 const salesCallTranscript = `
-generate a sales call transcript between a sales guy and a prospective customer for buying 10000 cars. 
-The conversation should include price negotiation, features of the cars, and delivery timeline.
+The conversation should include price negotiation, features, dimensions, and delivery timeline.
 The format of the transcript should look like this: 
     <timestamp> <sales guy name/Prospective customer name> (<domain name>): messages
     example:
@@ -31,8 +16,7 @@ The format of the transcript should look like this:
     00:00:06 Satya (microsoft.com): I'm sorry Sam we can't do 10000, how about 5000?
 `;
 
-
-function writeDataToFile(data) {
+function writeDataToFile(data, filePath) {
     fs.writeFile(filePath, data, 'utf8', (error) => {
         if (error) {
             console.error('An error occurred while writing to the file:', error);
@@ -42,13 +26,14 @@ function writeDataToFile(data) {
     });
 }
 
-async function main() {
+async function createChat(language, topic) {
+  console.log(`********************Generating transcripts for ${topic} in ${language} languague***********************************`);
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
       { 
         role: "system", 
-        content: salesCallTranscript
+        content: `generate a sales call transcript in ${language} for a conversation between a sales guy and a prospective customer for buying 10000 ${topic}. ${salesCallTranscript}`
       }],
       temperature: 0.7,
       max_tokens: 3000
@@ -57,12 +42,38 @@ async function main() {
   console.log(completion.choices[0].message.content);
   // Replace \n with new line and remove double quotes
   var response = JSON.stringify(completion.choices[0].message.content);
-  const formattedData = response.replace(/\\n/g, '\n').replace(/"/g, '');
 
-  writeDataToFile(formattedData);
+  var formattedData = response.replace(/\\r/g, '').replace(/\\n/g, '\n').replace(/"/g, '');
+  var filePath = `${outputPath}/Call_Transcript_${topic}_${language}.txt`;
+  writeDataToFile(formattedData, filePath);
 }
 
-main();
+async function processTopics(language) {
+    for (const topic of topics) {
+        try {
+            await createChat(language, topic);
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    }
+}
 
-
-
+function selectLanguage() {
+    interactiveIO.question('Select a language:\n1. English\n2. Spanish\n3. French\n', (answer) => {
+        interactiveIO.close();
+        let language = 'English';
+        switch (answer) {
+            case '2':
+                language = 'Spanish';
+                break;
+            case '3':
+                language = 'French';
+                break;
+            default:
+                language = 'English';
+        }
+        console.log("Generating Transcripts........");
+        processTopics(language);
+    });
+}
+selectLanguage();
