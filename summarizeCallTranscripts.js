@@ -24,7 +24,7 @@ async function generateSummary(transcript) {
         },
         {
            role: "user",
-           content: "Help me summarize the following sales transcript into plain English concisely."+transcript
+           content: `Help me summarize the following sales transcript into plain English concisely. ${transcript}`
         }],
         temperature: 0,
     });
