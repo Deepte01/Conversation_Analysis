@@ -1,1 +1,29 @@
-This is the placeholder transcript content
+00:00:00 John (CarSales.com): Good morning, this is John from CarSales.com. Am I speaking with Mr. Smith?
+
+00:00:05 Mr. Smith (Prospective customer): Yes, this is Mr. Smith. How can I help you, John?
+
+00:00:10 John (CarSales.com): Well, Mr. Smith, I understand that you are looking to purchase a large quantity of cars for your fleet. Is that correct?
+
+00:00:15 Mr. Smith (Prospective customer): Yes, that's correct. I am interested in buying 10,000 cars for our company. 
+
+00:00:20 John (CarSales.com): That's great to hear! We have a wide range of cars available with various features and options. Are you looking for any specific make or model?
+
+00:00:25 Mr. Smith (Prospective customer): We are open to different options. Can you provide me with more information on the pricing and features of the cars you have available?
+
+00:00:30 John (CarSales.com): Of course, Mr. Smith. We can offer you a bulk discount for purchasing 10,000 cars. Our cars come with advanced safety features, fuel-efficient engines, and the latest technology for a comfortable driving experience.
+
+00:00:35 Mr. Smith (Prospective customer): That sounds good. What would be the total cost for 10,000 cars, including the bulk discount?
+
+00:00:40 John (CarSales.com): We can offer you a special price of $20,000 per car for a total of $200 million for 10,000 cars. This price includes the bulk discount and delivery to your location.
+
+00:00:45 Mr. Smith (Prospective customer): The price seems reasonable. Can we negotiate on the price further?
+
+00:00:50 John (CarSales.com): We understand the importance of a good deal for such a large purchase. How about we reduce the price to $18,000 per car, bringing the total to $180 million for 10,000 cars?
+
+00:00:55 Mr. Smith (Prospective customer): That sounds more appealing. I think we have a deal at $18,000 per car. When can we expect the delivery of the cars?
+
+00:01:00 John (CarSales.com): Once the payment is processed, we can have the cars delivered to your location within 3 months. We will ensure a smooth and timely delivery process for your convenience.
+
+00:01:05 Mr. Smith (Prospective customer): Perfect, let's proceed with the purchase at $18,000 per car for 10,000 cars. Please send over the contract for review and let's get started.
+
+00:01:10 John (CarSales.com): Absolutely, Mr. Smith. I will email you the contract shortly. Thank you for choosing CarSales.com for your fleet purchase, and we look forward to doing business with you.
