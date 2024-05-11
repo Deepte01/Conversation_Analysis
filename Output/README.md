@@ -1,0 +1,1 @@
+This folder contains generated sales call transcripts from generateCallTranscripts.js file
