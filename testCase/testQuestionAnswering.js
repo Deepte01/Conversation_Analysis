@@ -53,7 +53,7 @@ describe('Application Tests', function() {
   });
 
   it('should check if a file exists', function(done) {
-    fs.access('./output/transcript_test.txt', fs.constants.F_OK, (err) => {
+    fs.access('./outputs/transcript_test.txt', fs.constants.F_OK, (err) => {
       expect(err ? false : true).to.be.true;
       done();
     });
@@ -64,7 +64,7 @@ describe('Application Tests', function() {
       callback(null, 'Test transcript 0987 @#$% ,.:`~`~?');
     });
 
-    const transcript = await readTranscriptFromFile('./output/transcript_test.txt');
+    const transcript = await readTranscriptFromFile('./outputs/transcript_test.txt');
 
     expect(transcript).to.equal('Test transcript 0987 @#$% ,.:`~`~?');
     fsStub.restore();
