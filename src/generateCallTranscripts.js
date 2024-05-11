@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { openai, interactiveIO } from './app.js';
 
-const outputPath = './output';
+const outputPath = './outputs';
 
 const topics=["Cars", "Computers", "Chairs"];
 

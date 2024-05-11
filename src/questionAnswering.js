@@ -10,7 +10,7 @@ var chatHistory = [];
 // Function to read transcript from file
 function readTranscriptFromFile(filePath) {
     return new Promise((resolve, reject) => {
-        fs.readFile(`./output/${filePath}`, 'utf8', (err, data) => {
+        fs.readFile(`./outputs/${filePath}`, 'utf8', (err, data) => {
             if (err) {
                 reject(err);
             } else {
