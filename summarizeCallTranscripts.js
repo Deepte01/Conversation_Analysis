@@ -1,8 +1,7 @@
 import fs from 'fs';
 import { openai, interactiveIO } from './app.js';
 
-const inputFilePath = './Output/transcript.txt';
-
+//call openAI model to generate the summary from the transcript
 async function generateSummary(transcript, language) {
     // using https://cookbook.openai.com/examples/how_to_format_inputs_to_chatgpt_models#few-shot-prompting
 
@@ -36,6 +35,8 @@ function readTranscriptFromFile(filePath) {
     });
 }
 
+
+//give options to user to select the languaue to get summary response
 function selectLanguage(transcript) {
     interactiveIO.question('Select a language to summarize the transcript:\n1. English\n2. Spanish\n3. French\n', (answer) => {
         interactiveIO.close();
@@ -53,7 +54,9 @@ function selectLanguage(transcript) {
         console.log("****************Summarizing Transcript**********************");
         generateSummary(transcript, language);
     });
-}
+};
+
+//get the transript file name to begin the summary process.
 async function handleUserInput() {
     // Ask for transcript file name
     interactiveIO.question('Enter the transcript file name in the output folder: ', async (transcriptFileName) => {
@@ -66,6 +69,6 @@ async function handleUserInput() {
             interactiveIO.close();
         }
     });
-}
+};
 
 handleUserInput();

@@ -1,7 +1,38 @@
 import fs from 'fs';
+import { saveResponse } from './saveResponse.js';
 import { openai, interactiveIO } from './app.js';
-import { resolve } from 'path';
 
+var fileName;
+var language;
+var salesCallTranscript;
+
+function setSalesCallTranscript(value)
+{
+  salesCallTranscript = value;
+}
+function getSalesCallTranscript()
+{
+   return salesCallTranscript;
+}
+function setFileName(value)
+{
+  fileName = value;
+  console.log("selected file name: "+ fileName);
+
+}
+function getFileName()
+{
+    return fileName;
+}
+function setLanguage(value)
+{
+    language = value;
+    console.log("language is set to: "+ language);
+}
+function getLanguage()
+{
+    return language;
+}
 
 // Function to read transcript from file
 function readTranscriptFromFile(filePath) {
@@ -15,10 +46,12 @@ function readTranscriptFromFile(filePath) {
         });
     });
 }
-
-async function getUserResponse(question, salesCallTranscript, language) {
+//
+async function getModelResponse(question) {
     // using https://cookbook.openai.com/examples/how_to_format_inputs_to_chatgpt_models#few-shot-prompting
-    console.log(`******fetching answer from OpenAI in ${language}************`)
+    var transcript = getSalesCallTranscript();
+    var language = getLanguage();
+    console.log(`******fetching answer from OpenAI in ${language}************`);
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -28,24 +61,28 @@ async function getUserResponse(question, salesCallTranscript, language) {
         },
         {
            role: "user",
-           content: `Help me to understand ${question} in the followig transcript: ${salesCallTranscript} . Respond back in ${language}.` 
+           content: `Help me to understand ${question} in the followig transcript: ${transcript} . Respond back in ${language}.` 
         }],
         temperature: 0,
     });
   
     console.log(completion.choices[0].message.content);
+    var response = completion.choices[0].message.content;
+    var fileName = getFileName();
+    //save response to the database
+    saveResponse(question, response, language, fileName);
 }
 
 /*
-    The below method is written with the help of ChatGPT and modified according to my requirements
+    The below method AskUserInput is written with the help of ChatGPT and modified according to my requirements
 */
-
-function AskUserInput(transcript, language)
+//prompt the user to provide a question
+function AskUserInput()
 {
     // Ask for user input
     interactiveIO.question('Enter your question: ', async (userInput) => {
     try {
-        await getUserResponse(userInput, transcript, language);
+        await getModelResponse(userInput);
     } catch (error) {
         console.error('Error sending data to API:', error.message);
     }
@@ -53,16 +90,17 @@ function AskUserInput(transcript, language)
     // Ask if user wants to provide another input
     interactiveIO.question('Do you want to provide another question? (yes/no): ', (answer) => {
         if (answer.toLowerCase() === 'yes') {
-            AskUserInput(transcript);
+            AskUserInput();
         } else {
             interactiveIO.close();
             console.log('Goodbye!');
+            process.exit(1);
         }
        });
     });    
 }
-let language = 'English';
 
+//give the options to user to select the languaue to get summary response
 async function selectLanguage() {
     return new Promise((resolve, reject) => {
         interactiveIO.question('Select which language you would like to receive response from:\n1. English\n2. Spanish\n3. French\n', (answer) => {
@@ -82,16 +120,17 @@ async function selectLanguage() {
     });
 }
 
-
+// Ask for transcript file name to bein the question and answers
 async function handleUserInput() {
-    // Ask for transcript file name
-    interactiveIO.question('Enter the transcript file name in the output folder: ', async (transcriptFileName) => {
+    interactiveIO.question('Enter a transcript file name from the output folder: ', async (transcriptFileName) => {
         try {
             // Read transcript from file
             const language = await selectLanguage();
-            console.log(language);
+            setLanguage(language);
+            setFileName(transcriptFileName);
             const transcript = await readTranscriptFromFile(transcriptFileName);
-            AskUserInput(transcript, language);
+            setSalesCallTranscript(transcript);
+            AskUserInput();
         } catch (error) {
             console.error('Error reading transcript file:', error.message);
             interactiveIO.close();
