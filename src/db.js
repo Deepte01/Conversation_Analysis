@@ -11,9 +11,9 @@ mongoose.connect(MongoDBURI,{socketTimeoutMS: 60000}).then(con => {
     process.exit(1);
 });
 
-//schema for storing the conversation
 /*
-The below schema is generated with the help of ChatGPT
+   created below schema to store chatHistory collection for the 
+   selected filename and user language.
 */
 const userChatResponseSchema = new mongoose.Schema({
   userSelectedLanguage: String,

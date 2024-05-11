@@ -2,43 +2,15 @@ import fs from 'fs';
 import { saveResponse } from './saveResponse.js';
 import { openai, interactiveIO } from './app.js';
 
-var fileName;
-var language;
-var salesCallTranscript;
-let chatHistory = [];
-
-function setSalesCallTranscript(value)
-{
-  salesCallTranscript = value;
-}
-function getSalesCallTranscript()
-{
-   return salesCallTranscript;
-}
-function setFileName(value)
-{
-  fileName = value;
-  console.log("selected file name: "+ fileName);
-
-}
-function getFileName()
-{
-    return fileName;
-}
-function setLanguage(value)
-{
-    language = value;
-    console.log("language is set to: "+ language);
-}
-function getLanguage()
-{
-    return language;
-}
+var fileName = "";
+var language = "English";
+var salesCallTranscript = "";
+var chatHistory = [];
 
 // Function to read transcript from file
 function readTranscriptFromFile(filePath) {
     return new Promise((resolve, reject) => {
-        fs.readFile(`./Output/${filePath}`, 'utf8', (err, data) => {
+        fs.readFile(`./output/${filePath}`, 'utf8', (err, data) => {
             if (err) {
                 reject(err);
             } else {
@@ -48,11 +20,9 @@ function readTranscriptFromFile(filePath) {
     });
 }
 
-//
+//get response from OpenAI API to the question asked by the user from the selected transcript
 async function getModelResponse(question) {
     // using https://cookbook.openai.com/examples/how_to_format_inputs_to_chatgpt_models#few-shot-prompting
-    var transcript = getSalesCallTranscript();
-    var language = getLanguage();
     console.log(`******fetching answer from OpenAI in ${language}************`);
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -63,18 +33,18 @@ async function getModelResponse(question) {
         },
         {
            role: "user",
-           content: `Help me to understand ${question} in the followig transcript: ${transcript} . Respond back in ${language}.` 
+           content: `Help me to understand ${question} in the followig transcript: ${salesCallTranscript} . Respond back in ${language}.` 
         }],
         temperature: 0,
     });
   
     console.log(completion.choices[0].message.content);
     return completion.choices[0].message.content;
-    //var fileName = getFileName();
 }
 
 /*
-    The below method AskUserInput is written with the help of ChatGPT and modified according to my requirements
+    The below method AskUserInput is written with the help of ChatGPT and 
+    modified according to my requirements
 */
 //prompt the user to provide a question
 async function AskUserInput()
@@ -97,10 +67,8 @@ async function AskUserInput()
         if (answer.toLowerCase() === 'yes') {
             AskUserInput();
         } else {
-            var language = getLanguage();
-            var file = getFileName();
             console.log(chatHistory);
-            await saveResponse(language, file, chatHistory);
+            await saveResponse(language, fileName, chatHistory);
             interactiveIO.close();
             console.log('Goodbye!');
             process.exit(1);
@@ -134,11 +102,9 @@ async function handleUserInput() {
     interactiveIO.question('Enter a transcript file name from the output folder: ', async (transcriptFileName) => {
         try {
             // Read transcript from file
-            const language = await selectLanguage();
-            setLanguage(language);
-            setFileName(transcriptFileName);
-            const transcript = await readTranscriptFromFile(transcriptFileName);
-            setSalesCallTranscript(transcript);
+            language = await selectLanguage();
+            fileName = transcriptFileName;
+            salesCallTranscript = await readTranscriptFromFile(transcriptFileName);
             AskUserInput();
         } catch (error) {
             console.error('Error reading transcript file:', error.message);

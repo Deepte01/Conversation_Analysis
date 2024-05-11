@@ -25,7 +25,7 @@ async function generateSummary(transcript, language) {
 // Function to read transcript from file
 function readTranscriptFromFile(filePath) {
     return new Promise((resolve, reject) => {
-        fs.readFile(`./Output/${filePath}`, 'utf8', (err, data) => {
+        fs.readFile(`./output/${filePath}`, 'utf8', (err, data) => {
             if (err) {
                 reject(err);
             } else {
