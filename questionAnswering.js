@@ -139,3 +139,5 @@ async function handleUserInput() {
 }
 
 handleUserInput();
+
+export {saveResponse, getModelResponse, readTranscriptFromFile};
