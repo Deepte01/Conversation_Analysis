@@ -9,8 +9,6 @@ import fs from 'fs';
 import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { openai } from '../app.js';
-import { userChatResponse } from '../db.js';
-import { saveResponse } from '../saveResponse.js';
 import { getModelResponse, readTranscriptFromFile } from '../questionAnswering.js';
 
 const { expect } = chai;
@@ -18,7 +16,6 @@ const { expect } = chai;
 describe('Application Tests', function() {
   let mongoServer;
   let client;
-  let saveResponseStub;
 
   before(async () => {
     mongoServer = await MongoMemoryServer.create();

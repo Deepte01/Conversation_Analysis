@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const MongoDBURI = "mongodb://localhost:27017/ChatHistory";
 
-mongoose.connect(MongoDBURI).then(con => {
+mongoose.connect(MongoDBURI,{socketTimeoutMS: 60000}).then(con => {
     //console.log("connected to db");
 }
 ).catch(err => {
@@ -12,18 +12,23 @@ mongoose.connect(MongoDBURI).then(con => {
 });
 
 //schema for storing the conversation
+/*
+The below schema is generated with the help of ChatGPT
+*/
 const userChatResponseSchema = new mongoose.Schema({
-  userInput: String,
-  apiResponse: String,
   userSelectedLanguage: String,
   fileName: String,
-  responseDateTime:{
-    type: Date,
-    default: Date.now
-  }
+  chatHistory: [
+    {
+      userQuestion: String,
+      apiResponse: String
+    }
+  ]
 });
 
-const userChatResponse = mongoose.model('UserChatResponse', userChatResponseSchema);
+const userChatResponse = mongoose.model('UserChatResponse', userChatResponseSchema
+
+);
 
 export {userChatResponse};
 

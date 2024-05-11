@@ -5,6 +5,7 @@ import { openai, interactiveIO } from './app.js';
 var fileName;
 var language;
 var salesCallTranscript;
+let chatHistory = [];
 
 function setSalesCallTranscript(value)
 {
@@ -46,6 +47,7 @@ function readTranscriptFromFile(filePath) {
         });
     });
 }
+
 //
 async function getModelResponse(question) {
     // using https://cookbook.openai.com/examples/how_to_format_inputs_to_chatgpt_models#few-shot-prompting
@@ -67,35 +69,42 @@ async function getModelResponse(question) {
     });
   
     console.log(completion.choices[0].message.content);
-    var response = completion.choices[0].message.content;
-    var fileName = getFileName();
-    //save response to the database
-    saveResponse(question, response, language, fileName);
+    return completion.choices[0].message.content;
+    //var fileName = getFileName();
 }
 
 /*
     The below method AskUserInput is written with the help of ChatGPT and modified according to my requirements
 */
 //prompt the user to provide a question
-function AskUserInput()
+async function AskUserInput()
 {
     // Ask for user input
     interactiveIO.question('Enter your question: ', async (userInput) => {
     try {
-        await getModelResponse(userInput);
+        var response = await getModelResponse(userInput);
+        //save response to the database
+       chatHistory.push({
+        userQuestion: userInput,
+        apiResponse: response
+       });
     } catch (error) {
         console.error('Error sending data to API:', error.message);
     }
 
     // Ask if user wants to provide another input
-    interactiveIO.question('Do you want to provide another question? (yes/no): ', (answer) => {
+    interactiveIO.question('Do you want to provide another question? (yes/no): ', async (answer) => {
         if (answer.toLowerCase() === 'yes') {
             AskUserInput();
         } else {
+            var language = getLanguage();
+            var file = getFileName();
+            console.log(chatHistory);
+            await saveResponse(language, file, chatHistory);
             interactiveIO.close();
             console.log('Goodbye!');
             process.exit(1);
-        }
+            }
        });
     });    
 }

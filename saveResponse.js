@@ -1,15 +1,17 @@
 import { userChatResponse } from './db.js';
 
-async function saveResponse(userInput, apiResponse, userSelectedLanguage, fileName) {
+async function saveResponse(userSelectedLanguage, fileName, chatHistory) {
+    console.log('Saving to database...'+ userSelectedLanguage +" "+fileName);
     try {
       const newUserResponse = new userChatResponse({
-        userInput,
-        apiResponse,
-        userSelectedLanguage,
-        fileName
+         userSelectedLanguage,
+         fileName,
+         chatHistory
       });
-
+      console.log(newUserResponse);
+      
       await newUserResponse.save();
+      
       console.log('Response saved successfully.');
     } catch (error) {
       console.error('Error saving response:', error);
@@ -17,4 +19,3 @@ async function saveResponse(userInput, apiResponse, userSelectedLanguage, fileNa
   }
 
   export { saveResponse };
-  
