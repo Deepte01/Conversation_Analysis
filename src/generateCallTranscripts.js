@@ -59,7 +59,7 @@ async function processTopics(language) {
 }
 
 function selectLanguage() {
-    interactiveIO.question('Select a language:\n1. English\n2. Spanish\n3. French\n', (answer) => {
+    interactiveIO.question('Select which language you would like to receive response from:\nEnter 1 for English\n Enter 2 for Spanish\n Enter 3 for French\n', (answer) => {
         interactiveIO.close();
         let language = 'English';
         switch (answer) {

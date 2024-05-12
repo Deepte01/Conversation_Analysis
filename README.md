@@ -30,7 +30,7 @@ To install all the required packages mentioned in the `package.json` file for th
     ```
     node .\src\summarizeCallTranscripts.js
     ```
-    Follow the prompt to provide a file name from the output folder. The generated summary will be printed in the console.
+    Follow the prompt to provide a file name from the output folder. The generated summary of key points will be printed in the console.
 4. For the third task, execute the following command in the terminal:
     ```
     node .\src\questionAnswering.js
@@ -49,9 +49,9 @@ A template for the sales call transcript is defined in such a way that it can ac
 
 Moreover, distinct transcript files are generated for different topics and saved under the "outputs" folder for further analysis. Finally, the proper use of asynchronous functions ensures the application runs efficiently without blocking the event loop.
 
-### Summarize Transcripts
+### Summarize Key Points From Transcripts
 
-To summarize the transcripts generated in the "outputs" folder, we start by taking transcript file name from the outputs folder and the language to generate the response in. A prompt template is defined such that the contents of the file and the user selected language are included. This prompt is then given as input to the OpenAI GPT-3.5 Turbo model, and the API response is printed onto the console. 
+To summarize key points from the transcripts generated in the "outputs" folder, we start by taking transcript file name from the outputs folder and the language to generate the response in. A prompt template is defined such that the contents of the file and the user selected language are included. This prompt is then given as input to the OpenAI GPT-3.5 Turbo model, and the API response is printed onto the console. 
 
 ### Question and Answering
 

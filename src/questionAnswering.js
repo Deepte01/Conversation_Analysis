@@ -67,7 +67,6 @@ async function AskUserInput()
         if (answer.toLowerCase() === 'yes') {
             AskUserInput();
         } else {
-            console.log(chatHistory);
             await saveResponse(language, fileName, chatHistory);
             interactiveIO.close();
             console.log('Goodbye!');
@@ -80,7 +79,7 @@ async function AskUserInput()
 //give the options to user to select the languaue to get summary response
 async function selectLanguage() {
     return new Promise((resolve, reject) => {
-        interactiveIO.question('Select which language you would like to receive response from:\n1. English\n2. Spanish\n3. French\n', (answer) => {
+        interactiveIO.question('Select which language you would like to receive response from:\nEnter 1 for English\n Enter 2 for Spanish\n Enter 3 for French\n', (answer) => {
             let language = 'English';
             switch (answer) {
                 case '2':
