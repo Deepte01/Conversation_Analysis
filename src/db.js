@@ -26,9 +26,7 @@ const userChatResponseSchema = new mongoose.Schema({
   ]
 });
 
-const userChatResponse = mongoose.model('UserChatResponse', userChatResponseSchema
-
-);
+const userChatResponse = mongoose.model('UserChatResponse', userChatResponseSchema);
 
 export {userChatResponse};
 

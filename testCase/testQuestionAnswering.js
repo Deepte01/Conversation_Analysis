@@ -1,6 +1,15 @@
 /*
 Generated the first draft of the code using ChatGPT. And then, I have modified it to 
-suit my requirements.
+suit my requirements. 
+for example: the mocha api for sinon.stub().resolves() is generated using chatGPT but the test case are written by me.
+ it('should connect to OpenAI API', async function() {
+    const openaiStub = sinon.stub(openai.chat.completions, 'create').resolves({ choices: [{ message: { content: 'Test response' }}] });
+
+    const response = await getModelResponse('Test question');
+
+    expect(openaiStub.calledOnce).to.be.true;
+    openaiStub.restore();
+  }); 
 */
 
 import * as chai from 'chai';
